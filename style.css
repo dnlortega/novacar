@@ -29,6 +29,34 @@ input, textarea, select, a {
   --transition: 0.3s ease;
 }
 
+/* ===== TEMA CLARO ===== */
+[data-theme="light"] {
+  --dark:   #F5F5F0;
+  --dark-2: #EBEBЕ5;
+  --dark-3: #FFFFFF;
+  --dark-4: #E0E0DA;
+  --text:   #1A1A1A;
+  --text-muted: #666;
+  --white:  #1A1A1A;
+}
+[data-theme="light"] body { background: #F5F5F0; color: #1A1A1A; }
+[data-theme="light"] .navbar { background: rgba(245,245,240,0.97); }
+[data-theme="light"] .hero { background: linear-gradient(160deg, #1A1A1A 0%, #2A2A2A 100%); }
+[data-theme="light"] .hero-content, [data-theme="light"] .hero-content h1,
+[data-theme="light"] .hero-content p { color: #F5F5F0; }
+[data-theme="light"] .card, [data-theme="light"] .price-card,
+[data-theme="light"] .testimonial-card, [data-theme="light"] .cert-card,
+[data-theme="light"] .faq-item { background: #FFFFFF; border-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .card h3, [data-theme="light"] .card p { color: #1A1A1A; }
+[data-theme="light"] .section-header h2, [data-theme="light"] .section-header p { color: #1A1A1A; }
+[data-theme="light"] .footer { background: #1A1A1A; }
+[data-theme="light"] .footer p, [data-theme="light"] .footer a { color: #E8E8E8; }
+[data-theme="light"] .brands-strip { background: #E8E8E3; }
+[data-theme="light"] .nav-links a { color: #333; }
+[data-theme="light"] .faq-question { color: #1A1A1A; background: transparent; }
+[data-theme="light"] input, [data-theme="light"] textarea,
+[data-theme="light"] select { background: #F0F0EA; color: #1A1A1A; border-color: #CCC; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -923,8 +951,8 @@ img { max-width: 100%; display: block; }
 
 /* ===== CARRO ANIMADO ===== */
 @keyframes car-drive {
-  from { transform: translateX(110vw); }
-  to   { transform: translateX(-260px); }
+  from { transform: translateX(calc(100vw + 10px)); }
+  to   { transform: translateX(calc(-220px - 10px)); }
 }
 @keyframes wheel-spin { to { transform: rotate(360deg); } }
 @keyframes road-move {
@@ -1873,11 +1901,14 @@ img { max-width: 100%; display: block; }
 /* ===== ANIMAÇÕES EXTRAS ===== */
 
 /* Shimmer/glare nos cards ao hover */
-.card, .price-card, .cert-card {
+/* .price-card NÃO leva overflow:hidden — o badge fica em top:-13px e seria cortado */
+.card, .cert-card {
   position: relative;
   overflow: hidden;
 }
-.card::after, .price-card::after {
+.price-card { position: relative; overflow: visible; }
+
+.card::after {
   content: '';
   position: absolute;
   top: -50%; left: -60%;
@@ -1887,9 +1918,7 @@ img { max-width: 100%; display: block; }
   transition: left 0.6s ease;
   pointer-events: none;
 }
-.card:hover::after, .price-card:hover::after {
-  left: 120%;
-}
+.card:hover::after { left: 120%; }
 
 /* Fade-in lateral para seções alternadas */
 .section:nth-child(even) .section-header {
@@ -2026,4 +2055,175 @@ img { max-width: 100%; display: block; }
   .piston { width: 22px; height: 22px; }
   .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
   .btn-lg { padding: 0.85rem 1.75rem; }
+  .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .contact-inner { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .hero-actions .btn { width: 100%; text-align: center; justify-content: center; }
+}
+
+/* ===== PERFORMANCE & MOBILE POLISH ===== */
+
+/* Scroll Progress Bar */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  z-index: 9999;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Custom Cursor */
+#custom-cursor {
+  position: fixed;
+  width: 36px; height: 36px;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.15s ease;
+  mix-blend-mode: difference;
+}
+#custom-cursor svg { width: 100%; height: 100%; }
+body:hover #custom-cursor { opacity: 1; }
+@media (hover: none) { #custom-cursor { display: none; } }
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--dark-3) 25%, var(--dark-4) 50%, var(--dark-3) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shine 1.5s infinite;
+  border-radius: 8px;
+}
+@keyframes skeleton-shine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton-card {
+  height: 220px;
+  border-radius: var(--radius);
+}
+.skeleton-line { height: 14px; margin: 8px 0; }
+.skeleton-line.short { width: 60%; }
+
+/* Exit Intent Popup */
+#exit-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  animation: fade-in-overlay 0.3s ease;
+}
+@keyframes fade-in-overlay { from { opacity: 0; } to { opacity: 1; } }
+#exit-popup[hidden] { display: none !important; }
+.exit-popup-box {
+  background: var(--dark-3);
+  border: 1px solid rgba(212,160,23,0.4);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: popup-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes popup-in { from { opacity: 0; transform: scale(0.85) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.exit-popup-icon { font-size: 3rem; margin-bottom: 1rem; }
+.exit-popup-box h3 { font-size: 1.4rem; color: var(--white); margin-bottom: 0.5rem; }
+.exit-popup-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+.exit-popup-close {
+  position: absolute;
+  top: 0.75rem; right: 1rem;
+  background: none; border: none;
+  color: var(--text-muted); font-size: 1.4rem;
+  cursor: pointer; line-height: 1;
+}
+.exit-popup-close:hover { color: var(--white); }
+
+/* 3D Tilt no hover dos cards de serviço */
+.card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Scroll progress indicator no topo */
+.navbar.scrolled #scroll-progress { opacity: 1; }
+
+/* Touch targets maiores no mobile */
+@media (hover: none) {
+  .btn, .nav-btn, .faq-question, .hamburger { min-height: 44px; }
+  .whatsapp-float { width: 60px; height: 60px; }
+}
+
+/* Melhora performance de animações */
+.gear, .float-tool, .smoke, .spark, .plug-flash,
+.car-svg, .brands-track, .pl-gear {
+  will-change: transform;
+}
+
+/* Lazy load images com fade */
+img[loading="lazy"] {
+  transition: opacity 0.4s ease;
+}
+
+/* Melhor scroll em iOS */
+html { -webkit-overflow-scrolling: touch; }
+
+/* Focus visible acessível */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Smooth scroll nativo */
+html { scroll-behavior: smooth; }
+
+/* Animação Tilt 3D nos cards */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* Typewriter cursor */
+.typewriter::after {
+  content: '|';
+  animation: cursor-blink 0.8s step-end infinite;
+  color: var(--gold);
+  margin-left: 2px;
+}
+
+/* Pulse no badge de promoção */
+.price-badge-top {
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(212,160,23,0); }
+}
+
+/* Melhorias responsivas gerais */
+@media (max-width: 1024px) {
+  .pricing-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+}
+@media (max-width: 900px) {
+  .cert-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  .brands-label { font-size: 0.8rem; }
+  .dev-card { flex-direction: column; text-align: center; }
+  .dev-stack { justify-content: center; }
+}
+@media (max-width: 400px) {
+  .cert-grid { grid-template-columns: 1fr 1fr; }
+  .hero-content h1 { font-size: 1.75rem; }
 }

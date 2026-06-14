@@ -1,13 +1,22 @@
 require('dotenv').config();
-const express    = require('express');
-const { Pool }   = require('pg');
-const jwt        = require('jsonwebtoken');
-const webpush    = require('web-push');
-const rateLimit  = require('express-rate-limit');
-const path       = require('path');
+const express     = require('express');
+const { Pool }    = require('pg');
+const jwt         = require('jsonwebtoken');
+const webpush     = require('web-push');
+const rateLimit   = require('express-rate-limit');
+const compression = require('compression');
+const helmet      = require('helmet');
+const path        = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
+
+// ── Compressão Gzip + Headers de segurança ────────────────────────────────────
+app.use(compression());
+app.use(helmet({
+  contentSecurityPolicy: false, // desabilitado para não quebrar scripts inline do site
+  crossOriginEmbedderPolicy: false,
+}));
 
 // ── Web Push ──────────────────────────────────────────────────────────────────
 webpush.setVapidDetails(
@@ -326,6 +335,31 @@ app.post('/api/push/subscribe', auth, async (req, res) => {
 app.delete('/api/push/subscribe', auth, async (req, res) => {
   await pool.query('DELETE FROM push_subscriptions WHERE endpoint=$1', [req.body.endpoint]);
   res.json({ ok: true });
+});
+
+// ── Backup JSON do banco ──────────────────────────────────────────────────────
+app.get('/api/backup', auth, async (req, res) => {
+  try {
+    const [cfg, svc, prc, tst, faq, bkn] = await Promise.all([
+      pool.query('SELECT * FROM config'),
+      pool.query('SELECT * FROM services ORDER BY sort_order,id'),
+      pool.query('SELECT * FROM pricing ORDER BY id'),
+      pool.query('SELECT * FROM testimonials ORDER BY id'),
+      pool.query('SELECT * FROM faq ORDER BY sort_order,id'),
+      pool.query('SELECT * FROM bookings ORDER BY created_at DESC'),
+    ]);
+    const backup = {
+      exported_at: new Date().toISOString(),
+      config: Object.fromEntries(cfg.rows.map(r => [r.key, r.value])),
+      services: svc.rows,
+      pricing: prc.rows,
+      testimonials: tst.rows,
+      faq: faq.rows,
+      bookings: bkn.rows,
+    };
+    res.setHeader('Content-Disposition', `attachment; filename="novacar-backup-${new Date().toISOString().split('T')[0]}.json"`);
+    res.json(backup);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // ── Sitemap dinâmico ──────────────────────────────────────────────────────────

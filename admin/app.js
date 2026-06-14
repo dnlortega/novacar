@@ -630,7 +630,10 @@ async function bookings() {
     <div class="page">
       <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
         <div><h2>Agendamentos</h2><p>Solicitações recebidas pelo formulário do site</p></div>
-        <button id="btn-csv" class="btn-sm">⬇ Exportar CSV</button>
+        <div style="display:flex;gap:.5rem">
+          <button id="btn-csv" class="btn-sm">⬇ CSV</button>
+          <button id="btn-json-backup" class="btn-sm gold">⬇ Backup JSON</button>
+        </div>
       </div>
       <div id="bookings-area">Carregando…</div>
     </div>`;
@@ -693,6 +696,7 @@ async function bookings() {
     const a    = Object.assign(document.createElement('a'), { href: url, download: `agendamentos_novacar_${new Date().toISOString().split('T')[0]}.csv` });
     a.click(); URL.revokeObjectURL(url);
   };
+  $('btn-json-backup').onclick = downloadBackup;
 }
 
 // ── Alterar Senha ─────────────────────────────────────────────────────────────
@@ -749,6 +753,72 @@ function startSessionTimer() {
   setInterval(tick, 1000);
 }
 
+// ── Backup JSON ───────────────────────────────────────────────────────────────
+async function downloadBackup() {
+  const r = await fetch(`${API}/backup`, { headers: { Authorization: `Bearer ${state.token}` } });
+  if (!r.ok) { toast('Erro ao gerar backup', 'error'); return; }
+  const blob = await r.blob();
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: `novacar-backup-${new Date().toISOString().split('T')[0]}.json` });
+  a.click(); URL.revokeObjectURL(url);
+  toast('Backup baixado!');
+}
+
+// ── Notificação sonora de agendamento ─────────────────────────────────────────
+let lastBookingCount = null;
+function playNotifSound() {
+  try {
+    const ctx  = new (window.AudioContext || window.webkitAudioContext)();
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start(); osc.stop(ctx.currentTime + 0.4);
+  } catch {}
+}
+async function pollBookings() {
+  const s = await req('GET', '/stats');
+  if (!s) return;
+  if (lastBookingCount !== null && s.bookings > lastBookingCount) {
+    playNotifSound();
+    toast(`🔔 Novo agendamento recebido!`, 'success');
+    loadBadge();
+  }
+  lastBookingCount = s.bookings;
+}
+setInterval(pollBookings, 30000);
+
+// ── Adiciona botões de backup e preview à sidebar ─────────────────────────────
+function addSidebarExtras() {
+  const footer = document.querySelector('.sidebar-footer');
+  if (!footer || $('btn-backup')) return;
+
+  const backup = document.createElement('button');
+  backup.id = 'btn-backup';
+  backup.className = 'btn-view-site';
+  backup.style.cssText = 'background:rgba(212,160,23,0.1);border-color:rgba(212,160,23,0.3);color:var(--gold)';
+  backup.textContent = '⬇ Backup JSON';
+  backup.onclick = downloadBackup;
+  footer.insertBefore(backup, footer.firstChild);
+
+  const preview = document.createElement('a');
+  preview.href = '/';
+  preview.target = '_blank';
+  preview.className = 'btn-view-site';
+  preview.style.cssText = 'background:rgba(255,255,255,0.05)';
+  preview.textContent = '👁 Preview site';
+  footer.insertBefore(preview, footer.firstChild);
+}
+
+// ── Overview com extras ───────────────────────────────────────────────────────
+const _origShowDashboard = showDashboard;
+
 // ── Init ───────────────────────────────────────────────────────────────────────
 if (state.token) showDashboard();
 else showLogin();
+
+// Adiciona extras após DOM pronto
+setTimeout(addSidebarExtras, 100);
