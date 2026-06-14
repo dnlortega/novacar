@@ -1,3 +1,43 @@
+// ---- Proteção de conteúdo ----
+(function protect() {
+  // Aviso no console
+  const s = [
+    'color:#D4A017;font-size:16px;font-weight:bold',
+    'color:#888;font-size:12px',
+  ];
+  console.log('%c⚙ NovaCar Studio Automotivo', s[0]);
+  console.log('%c© 2026 Desenvolvido por Daniel Ortega — linkedin.com/in/daniel-op\nA cópia deste código sem autorização é proibida.', s[1]);
+
+  // Desabilita botão direito
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Bloqueia atalhos de desenvolvedor e salvar
+  document.addEventListener('keydown', e => {
+    const ctrl = e.ctrlKey || e.metaKey;
+
+    // F12
+    if (e.key === 'F12') { e.preventDefault(); return; }
+
+    // Ctrl+U (ver código-fonte), Ctrl+S (salvar página)
+    if (ctrl && (e.key === 'u' || e.key === 'U' ||
+                 e.key === 's' || e.key === 'S')) {
+      e.preventDefault(); return;
+    }
+
+    // Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspecionar)
+    if (ctrl && e.shiftKey && (
+      e.key === 'i' || e.key === 'I' ||
+      e.key === 'j' || e.key === 'J' ||
+      e.key === 'c' || e.key === 'C'
+    )) { e.preventDefault(); return; }
+  });
+
+  // Desabilita drag de imagens e elementos
+  document.addEventListener('dragstart', e => {
+    if (e.target.tagName !== 'INPUT') e.preventDefault();
+  });
+})();
+
 // ---- Preloader ----
 window.addEventListener('load', () => {
   const pl = document.getElementById('preloader');
