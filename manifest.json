@@ -1,0 +1,15 @@
+{
+  "name": "NovaCar Studio Automotivo",
+  "short_name": "NovaCar",
+  "description": "Mecânica automotiva completa em Bauru/SP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#D4A017",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["automotive", "business"],
+  "lang": "pt-BR"
+}

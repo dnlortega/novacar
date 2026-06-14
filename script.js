@@ -128,9 +128,22 @@ const scrollObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 
-document.querySelectorAll('.card, .testimonial-card, .price-card').forEach(c => scrollObserver.observe(c));
+document.querySelectorAll('.card, .testimonial-card, .price-card, .cert-card').forEach(c => scrollObserver.observe(c));
 document.querySelector('.hero-stats') && scrollObserver.observe(document.querySelector('.hero-stats'));
 document.querySelector('.skill-bars')  && scrollObserver.observe(document.querySelector('.skill-bars'));
+
+// ---- Reveal lateral / section-header / info-items / form ----
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    revealObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('[data-reveal], .section-header, .info-item, .agendamento-form').forEach(el => {
+  revealObserver.observe(el);
+});
 
 // ---- FAQ accordion ----
 document.querySelectorAll('.faq-question').forEach(btn => {
