@@ -1,5 +1,9 @@
 node_modules/
 .env
+.env.local
 *.log
 *.err
 .DS_Store
+.next/
+admin-next/.next/
+admin-next/node_modules/
