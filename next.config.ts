@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["pg", "web-push"],
+  async rewrites() {
+    return [
+      { source: "/", destination: "/index.html" },
+    ];
+  },
   async headers() {
     return [
       {

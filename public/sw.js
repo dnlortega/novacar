@@ -1,5 +1,5 @@
-const CACHE = 'novacar-v1';
-const STATIC = ['/', '/style.css', '/script.js', '/dynamic.js', '/favicon.svg'];
+const CACHE = 'novacar-v2';
+const STATIC = ['/', '/style.css', '/script.js', '/dynamic.js', '/favicon.svg', '/manifest.json'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)).then(() => self.skipWaiting()));

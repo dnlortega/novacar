@@ -374,6 +374,20 @@ document.querySelectorAll('.card').forEach(card => {
   });
 })();
 
+// ---- Parallax nas engrenagens do hero ----
+(function initParallax() {
+  const g1 = document.querySelector('.gear-1');
+  const g2 = document.querySelector('.gear-2');
+  const g3 = document.querySelector('.gear-3');
+  if (!g1 && !g2 && !g3) return;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (g1) g1.style.translate = '0 ' + (y * 0.07).toFixed(1) + 'px';
+    if (g2) g2.style.translate = '0 ' + (y * -0.04).toFixed(1) + 'px';
+    if (g3) g3.style.translate = '0 ' + (y * 0.11).toFixed(1) + 'px';
+  }, { passive: true });
+})();
+
 // ---- Smooth scroll sem hash na URL ----
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
