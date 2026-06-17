@@ -6,6 +6,6 @@ export async function POST(req: NextRequest) {
   if (password !== process.env.ADMIN_PASSWORD) {
     return NextResponse.json({ error: "Senha incorreta" }, { status: 401 });
   }
-  const token = sign({ role: "admin" }, process.env.JWT_SECRET!, { expiresIn: "12h" });
+  const token = sign({ role: "admin" }, process.env.JWT_SECRET!, { expiresIn: "1h" });
   return NextResponse.json({ token, vapidPublicKey: process.env.VAPID_PUBLIC_KEY });
 }
