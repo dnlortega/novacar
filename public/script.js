@@ -212,14 +212,16 @@ document.querySelectorAll('.form-group input, .form-group select').forEach(field
   if (!bar) return;
   bar.removeAttribute('hidden');
 
-  document.getElementById('lgpd-accept')?.addEventListener('click', () => {
-    localStorage.setItem('lgpd', 'accepted');
-    bar.setAttribute('hidden', '');
-  });
-  document.getElementById('lgpd-decline')?.addEventListener('click', () => {
-    localStorage.setItem('lgpd', 'declined');
-    bar.setAttribute('hidden', '');
-  });
+  function dismissLGPD(val) {
+    localStorage.setItem('lgpd', val);
+    bar.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    bar.style.opacity = '0';
+    bar.style.transform = 'translateY(100%)';
+    setTimeout(() => { bar.style.display = 'none'; }, 320);
+  }
+
+  document.getElementById('lgpd-accept')?.addEventListener('click', () => dismissLGPD('accepted'));
+  document.getElementById('lgpd-decline')?.addEventListener('click', () => dismissLGPD('declined'));
 })();
 
 // ---- Active nav highlight ----
@@ -357,18 +359,30 @@ document.querySelectorAll('.card').forEach(card => {
   const saved = localStorage.getItem('nc_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
 
-  const btn = document.createElement('button');
-  btn.id = 'theme-toggle';
-  btn.setAttribute('aria-label', 'Alternar tema claro/escuro');
-  btn.innerHTML = saved === 'dark' ? '☀️' : '🌙';
-  btn.style.cssText = 'position:fixed;bottom:5rem;right:1.75rem;z-index:997;background:var(--dark-3);border:1px solid rgba(212,160,23,0.3);border-radius:50%;width:44px;height:44px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 12px rgba(0,0,0,0.3)';
-  document.body.appendChild(btn);
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
 
   btn.addEventListener('click', () => {
     const curr = document.documentElement.getAttribute('data-theme');
     const next = curr === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('nc_theme', next);
-    btn.innerHTML = next === 'dark' ? '☀️' : '🌙';
+
+    // Mini spin feedback
+    btn.style.transform = 'rotate(360deg) scale(1.15)';
+    setTimeout(() => { btn.style.transform = ''; }, 350);
   });
 })();
+
+// ---- Smooth scroll sem hash na URL ----
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const hash = a.getAttribute('href');
+    if (!hash || hash === '#') return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
+    history.replaceState(null, '', location.pathname);
+  });
+});

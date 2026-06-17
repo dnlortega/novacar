@@ -338,6 +338,18 @@
         <a href="#contato">Contato</a>
       </nav>
       <a href="https://wa.me/5514998231408" target="_blank" rel="noopener noreferrer" class="btn btn-primary nav-cta">Agendar via WhatsApp</a>
+      <button id="theme-toggle" class="theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+          <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
       <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -663,37 +675,68 @@
     <svg class="car-svg" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="hlight" cx="100%" cy="50%" r="100%">
-          <stop offset="0%" stop-color="rgba(255,255,180,0.35)"/>
+          <stop offset="0%" stop-color="rgba(255,255,180,0.45)"/>
           <stop offset="100%" stop-color="transparent"/>
         </radialGradient>
+        <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#2E3540"/>
+          <stop offset="100%" stop-color="#1C2028"/>
+        </linearGradient>
+        <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#3A4250"/>
+          <stop offset="100%" stop-color="#2E3540"/>
+        </linearGradient>
       </defs>
       <!-- Farol beam -->
-      <path d="M198 32 L240 18 L240 50 L198 44 Z" fill="url(#hlight)"/>
-      <!-- Corpo -->
-      <path d="M18 50 L18 36 Q18 30 24 28 L54 18 Q64 11 80 11 L134 11 Q150 11 160 18 L186 28 Q192 30 192 36 L192 50 Z"
-        fill="#141414" stroke="rgba(212,160,23,0.9)" stroke-width="1.5"/>
+      <path d="M198 32 L248 16 L248 52 L198 44 Z" fill="url(#hlight)" opacity="0.7"/>
+      <!-- Sombra inferior da carroceria -->
+      <path d="M22 50 L188 50 L186 52 L24 52 Z" fill="rgba(0,0,0,0.4)"/>
+      <!-- Corpo principal (parte baixa) -->
+      <path d="M18 50 L18 36 Q18 32 22 30 L52 20 Q60 14 76 13 L144 13 Q158 14 166 20 L186 30 Q190 32 192 36 L192 50 Z"
+        fill="url(#bodyGrad)" stroke="rgba(212,160,23,0.95)" stroke-width="1.5"/>
+      <!-- Teto / Capô (top highlight) -->
+      <path d="M57 28 L80 14 L140 14 L162 28 Z"
+        fill="url(#roofGrad)" stroke="rgba(212,160,23,0.3)" stroke-width="0.8"/>
       <!-- Vidros -->
-      <path d="M59 27 L80 17 L134 17 L155 27 Z"
-        fill="rgba(80,160,220,0.25)" stroke="rgba(212,160,23,0.3)" stroke-width="1"/>
-      <line x1="107" y1="17" x2="107" y2="27" stroke="rgba(212,160,23,0.3)" stroke-width="1"/>
+      <path d="M61 27 L80 16 L140 16 L158 27 Z"
+        fill="rgba(100,180,240,0.30)" stroke="rgba(150,210,255,0.4)" stroke-width="0.8"/>
+      <line x1="107" y1="16" x2="107" y2="27" stroke="rgba(212,160,23,0.4)" stroke-width="1"/>
+      <!-- Reflexo no teto -->
+      <path d="M85 15 L100 13.5 L115 13.5 L130 15 L115 15.5 L100 15.5 Z" fill="rgba(255,255,255,0.08)"/>
       <!-- Roda traseira -->
-      <circle cx="54"  cy="53" r="14" fill="#0d0d0d" stroke="rgba(212,160,23,0.85)" stroke-width="2"/>
-      <circle cx="54"  cy="53" r="7"  fill="#1a1a1a" stroke="rgba(212,160,23,0.4)" stroke-width="1.5"/>
-      <circle cx="54"  cy="53" r="2"  fill="rgba(212,160,23,0.7)"/>
+      <circle cx="54"  cy="53" r="13" fill="#111" stroke="rgba(212,160,23,0.9)" stroke-width="2"/>
+      <circle cx="54"  cy="53" r="8"  fill="#1e1e1e" stroke="rgba(212,160,23,0.35)" stroke-width="1.5"/>
+      <!-- Raios roda traseira -->
+      <line x1="54" y1="45" x2="54" y2="61" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+      <line x1="46" y1="53" x2="62" y2="53" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+      <line x1="48.3" y1="47.3" x2="59.7" y2="58.7" stroke="rgba(212,160,23,0.35)" stroke-width="0.8"/>
+      <line x1="59.7" y1="47.3" x2="48.3" y2="58.7" stroke="rgba(212,160,23,0.35)" stroke-width="0.8"/>
+      <circle cx="54"  cy="53" r="2.5" fill="rgba(212,160,23,0.8)"/>
       <!-- Roda dianteira -->
-      <circle cx="158" cy="53" r="14" fill="#0d0d0d" stroke="rgba(212,160,23,0.85)" stroke-width="2"/>
-      <circle cx="158" cy="53" r="7"  fill="#1a1a1a" stroke="rgba(212,160,23,0.4)" stroke-width="1.5"/>
-      <circle cx="158" cy="53" r="2"  fill="rgba(212,160,23,0.7)"/>
-      <!-- Farol -->
-      <ellipse cx="190" cy="35" rx="4" ry="3" fill="rgba(255,255,190,0.95)"/>
-      <ellipse cx="190" cy="41" rx="3" ry="2" fill="rgba(255,200,80,0.8)"/>
-      <!-- Lanterna traseira -->
-      <ellipse cx="20" cy="36" rx="3" ry="2.5" fill="rgba(255,40,40,0.85)"/>
-      <!-- Escapamento -->
-      <line x1="18" y1="47" x2="6" y2="47" stroke="rgba(212,160,23,0.4)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="158" cy="53" r="13" fill="#111" stroke="rgba(212,160,23,0.9)" stroke-width="2"/>
+      <circle cx="158" cy="53" r="8"  fill="#1e1e1e" stroke="rgba(212,160,23,0.35)" stroke-width="1.5"/>
+      <!-- Raios roda dianteira -->
+      <line x1="158" y1="45" x2="158" y2="61" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+      <line x1="150" y1="53" x2="166" y2="53" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+      <line x1="152.3" y1="47.3" x2="163.7" y2="58.7" stroke="rgba(212,160,23,0.35)" stroke-width="0.8"/>
+      <line x1="163.7" y1="47.3" x2="152.3" y2="58.7" stroke="rgba(212,160,23,0.35)" stroke-width="0.8"/>
+      <circle cx="158" cy="53" r="2.5" fill="rgba(212,160,23,0.8)"/>
+      <!-- Farol dianteiro duplo -->
+      <ellipse cx="190" cy="33" rx="5" ry="3.5" fill="rgba(255,255,200,0.95)" filter="url(#headlight-glow)"/>
+      <ellipse cx="190" cy="41" rx="4" ry="2.5" fill="rgba(255,200,80,0.9)"/>
+      <!-- Halo do farol -->
+      <ellipse cx="190" cy="33" rx="7" ry="5" fill="none" stroke="rgba(255,255,180,0.25)" stroke-width="1"/>
+      <!-- Lanterna traseira LED -->
+      <rect x="17" y="33" width="4" height="5" rx="1.5" fill="rgba(255,30,30,0.9)"/>
+      <rect x="17" y="39" width="4" height="3" rx="1" fill="rgba(255,100,20,0.7)"/>
+      <!-- Escapamento com fumaça implícita -->
+      <line x1="18" y1="47" x2="4" y2="47" stroke="rgba(212,160,23,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="18" y1="47" x2="8" y2="45" stroke="rgba(212,160,23,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Soleira / detalhe lateral -->
+      <rect x="22" y="49" width="170" height="2.5" rx="1" fill="rgba(212,160,23,0.35)"/>
       <!-- Logo -->
       <text x="107" y="41" text-anchor="middle" font-size="5.5"
-        fill="rgba(212,160,23,0.5)" font-family="Inter,sans-serif" font-weight="700">NOVACAR</text>
+        fill="rgba(212,160,23,0.65)" font-family="Inter,sans-serif" font-weight="700" letter-spacing="0.05em">NOVACAR</text>
     </svg>
   </div>
 

@@ -31,31 +31,167 @@ input, textarea, select, a {
 
 /* ===== TEMA CLARO ===== */
 [data-theme="light"] {
-  --dark:   #F5F5F0;
-  --dark-2: #EBEBЕ5;
-  --dark-3: #FFFFFF;
-  --dark-4: #E0E0DA;
-  --text:   #1A1A1A;
-  --text-muted: #666;
-  --white:  #1A1A1A;
+  --dark:       #F5F5F0;
+  --dark-2:     #EEEDE8;
+  --dark-3:     #FFFFFF;
+  --dark-4:     #E5E4DE;
+  --text:       #1C1C1C;
+  --text-muted: #5A5A5A;
+  --white:      #1C1C1C;
 }
-[data-theme="light"] body { background: #F5F5F0; color: #1A1A1A; }
-[data-theme="light"] .navbar { background: rgba(245,245,240,0.97); }
-[data-theme="light"] .hero { background: linear-gradient(160deg, #1A1A1A 0%, #2A2A2A 100%); }
-[data-theme="light"] .hero-content, [data-theme="light"] .hero-content h1,
-[data-theme="light"] .hero-content p { color: #F5F5F0; }
-[data-theme="light"] .card, [data-theme="light"] .price-card,
-[data-theme="light"] .testimonial-card, [data-theme="light"] .cert-card,
-[data-theme="light"] .faq-item { background: #FFFFFF; border-color: rgba(0,0,0,0.1); }
-[data-theme="light"] .card h3, [data-theme="light"] .card p { color: #1A1A1A; }
-[data-theme="light"] .section-header h2, [data-theme="light"] .section-header p { color: #1A1A1A; }
-[data-theme="light"] .footer { background: #1A1A1A; }
-[data-theme="light"] .footer p, [data-theme="light"] .footer a { color: #E8E8E8; }
-[data-theme="light"] .brands-strip { background: #E8E8E3; }
-[data-theme="light"] .nav-links a { color: #333; }
-[data-theme="light"] .faq-question { color: #1A1A1A; background: transparent; }
-[data-theme="light"] input, [data-theme="light"] textarea,
-[data-theme="light"] select { background: #F0F0EA; color: #1A1A1A; border-color: #CCC; }
+
+/* Transição suave entre temas */
+body, .navbar, .card, .price-card, .testimonial-card, .cert-card,
+.faq-item, .section, .brands-strip, .car-strip, .tire-strip,
+.agendamento-form, .contact-info, .about-img-placeholder,
+.price-icon, .card-icon, .map-wrap {
+  transition: background 0.35s ease, background-color 0.35s ease,
+              border-color 0.35s ease, box-shadow 0.35s ease, color 0.25s ease;
+}
+
+/* Body & global */
+[data-theme="light"] body        { background: #F5F5F0; color: #1C1C1C; }
+
+/* Navbar */
+[data-theme="light"] .navbar.scrolled {
+  background: rgba(245,245,240,0.96);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+}
+[data-theme="light"] .logo         { color: #1C1C1C; }
+[data-theme="light"] .logo span    { color: var(--gold); }
+[data-theme="light"] .nav-links a  { color: #444; }
+[data-theme="light"] .nav-links a:hover { color: #1C1C1C; }
+
+/* Hero permanece escuro */
+[data-theme="light"] .hero {
+  background:
+    linear-gradient(160deg, rgba(10,10,10,0.96) 0%, rgba(26,14,0,0.90) 50%, rgba(10,10,10,0.96) 100%),
+    url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1600&q=80') center/cover no-repeat;
+}
+[data-theme="light"] .hero-content,
+[data-theme="light"] .hero-content h1,
+[data-theme="light"] .hero-content p { color: #F0F0EA; }
+[data-theme="light"] .hero-stats     { border-color: rgba(255,255,255,0.12); }
+[data-theme="light"] .stat-label     { color: rgba(240,240,234,0.6); }
+
+/* Seções */
+[data-theme="light"] .services      { background: #F5F5F0; }
+[data-theme="light"] .about         { background: #EEEDE8; }
+[data-theme="light"] .pricing       { background: #F5F5F0; }
+[data-theme="light"] .testimonials  { background: #EEEDE8; }
+[data-theme="light"] .cta-banner    { background: linear-gradient(135deg, #1A1A1A 0%, #2C1800 100%); }
+[data-theme="light"] .faq-section   { background: #F5F5F0; }
+[data-theme="light"] .contact       { background: #EEEDE8; }
+
+/* Section headers */
+[data-theme="light"] .section-header h2  { color: #1C1C1C; }
+[data-theme="light"] .section-header p   { color: #5A5A5A; }
+[data-theme="light"] .label             { color: var(--gold); }
+
+/* Cards de serviço */
+[data-theme="light"] .card {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+[data-theme="light"] .card:hover {
+  border-color: rgba(212,160,23,0.4);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+[data-theme="light"] .card h3      { color: #1C1C1C; }
+[data-theme="light"] .card p       { color: #5A5A5A; }
+[data-theme="light"] .card-icon    { background: rgba(212,160,23,0.08); border-color: rgba(212,160,23,0.2); }
+
+/* About */
+[data-theme="light"] .about-img-placeholder { background: #E5E4DE; }
+[data-theme="light"] .info-item h4  { color: #1C1C1C; }
+[data-theme="light"] .info-item p   { color: #5A5A5A; }
+[data-theme="light"] .info-icon     { background: rgba(212,160,23,0.1); border-color: rgba(212,160,23,0.2); }
+
+/* Preços */
+[data-theme="light"] .price-card {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+}
+[data-theme="light"] .price-card:hover  { border-color: rgba(212,160,23,0.4); }
+[data-theme="light"] .price-featured    { border-color: rgba(212,160,23,0.5) !important; box-shadow: 0 8px 32px rgba(212,160,23,0.15) !important; }
+[data-theme="light"] .price-card h3     { color: #1C1C1C; }
+[data-theme="light"] .price-amount      { color: #1C1C1C; }
+[data-theme="light"] .price-amount span { color: var(--gold); }
+[data-theme="light"] .price-list li     { color: #4A4A4A; border-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .price-icon        { background: rgba(212,160,23,0.08); border-color: rgba(212,160,23,0.2); }
+[data-theme="light"] .pricing-note      { color: #666; }
+
+/* Depoimentos */
+[data-theme="light"] .testimonial-card {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+[data-theme="light"] .t-text       { color: #333; }
+[data-theme="light"] .t-author strong { color: #1C1C1C; }
+[data-theme="light"] .t-author span   { color: #777; }
+[data-theme="light"] .t-quote svg     { fill: rgba(212,160,23,0.2); }
+
+/* FAQ */
+[data-theme="light"] .faq-item {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+[data-theme="light"] .faq-item.open { border-color: rgba(212,160,23,0.35) !important; }
+[data-theme="light"] .faq-question  { color: #1C1C1C; background: transparent; }
+[data-theme="light"] .faq-answer p  { color: #5A5A5A; }
+[data-theme="light"] .faq-icon      { color: var(--gold); }
+
+/* Formulário & Contato */
+[data-theme="light"] .agendamento-form  { background: #FFFFFF; border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+[data-theme="light"] .agendamento-form h3 { color: #1C1C1C; }
+[data-theme="light"] .form-group label  { color: #444; }
+[data-theme="light"] .form-group input,
+[data-theme="light"] .form-group select,
+[data-theme="light"] .form-group textarea { background: #F8F8F4; color: #1C1C1C; border-color: rgba(0,0,0,0.15); }
+[data-theme="light"] .form-group input::placeholder,
+[data-theme="light"] .form-group textarea::placeholder { color: #AAA; }
+[data-theme="light"] .form-note      { color: #777; }
+[data-theme="light"] .contact-info h3 { color: #1C1C1C; }
+[data-theme="light"] .contact-item p, [data-theme="light"] .contact-item span { color: #5A5A5A; }
+[data-theme="light"] .contact-icon   { background: rgba(212,160,23,0.1); border-color: rgba(212,160,23,0.2); }
+
+/* Certificações */
+[data-theme="light"] .cert-card {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+[data-theme="light"] .cert-card p   { color: #5A5A5A; }
+[data-theme="light"] .cert-card h4  { color: #1C1C1C; }
+
+/* Marcas */
+[data-theme="light"] .brands-strip  { background: #E8E7E1; }
+[data-theme="light"] .brands-label  { color: #888; }
+[data-theme="light"] .brand-item    { opacity: 0.65; filter: none; }
+
+/* Car strip em modo claro */
+[data-theme="light"] .car-strip     { background: #E5E4DE; border-color: rgba(212,160,23,0.12); }
+[data-theme="light"] .road          { background: #2A2A2A; }
+
+/* Mapa */
+[data-theme="light"] .map-wrap      { border-color: rgba(0,0,0,0.1); }
+
+/* Back to top */
+[data-theme="light"] .back-to-top  { background: rgba(212,160,23,0.1); border-color: rgba(212,160,23,0.35); color: var(--gold); }
+
+/* LGPD bar */
+[data-theme="light"] .lgpd-bar     { background: #FFFFFF; border-top: 1px solid rgba(0,0,0,0.1); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); }
+[data-theme="light"] .lgpd-bar p   { color: #555; }
+
+/* Footer — permanece escuro */
+[data-theme="light"] .footer        { background: #1C1C1C; }
+[data-theme="light"] .footer p,
+[data-theme="light"] .footer a,
+[data-theme="light"] .footer h4     { color: #E0E0E0; }
 
 html { scroll-behavior: smooth; }
 
@@ -230,7 +366,47 @@ img { max-width: 100%; display: block; }
   transition: color var(--transition);
 }
 .nav-links a:hover { color: var(--white); }
-.nav-cta { margin-left: 1rem; flex-shrink: 0; }
+.nav-cta { margin-left: 0.5rem; flex-shrink: 0; }
+
+/* ===== BOTÃO TEMA (NAVBAR) ===== */
+.theme-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,160,23,0.25);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: background 0.3s ease, border-color 0.3s ease,
+              transform 0.3s ease, color 0.3s ease;
+}
+.theme-btn svg { width: 17px; height: 17px; pointer-events: none; }
+.theme-btn:hover {
+  background: rgba(212,160,23,0.15);
+  border-color: rgba(212,160,23,0.55);
+  color: var(--gold);
+  transform: rotate(25deg) scale(1.08);
+}
+/* Dark mode: mostra sol (clica para ir para claro) */
+.theme-btn .icon-moon { display: none; }
+.theme-btn .icon-sun  { display: block; }
+/* Light mode: mostra lua (clica para ir para escuro) */
+[data-theme="light"] .theme-btn .icon-moon { display: block; }
+[data-theme="light"] .theme-btn .icon-sun  { display: none; }
+[data-theme="light"] .theme-btn {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.15);
+  color: #555;
+}
+[data-theme="light"] .theme-btn:hover {
+  background: rgba(212,160,23,0.1);
+  border-color: rgba(212,160,23,0.4);
+  color: var(--gold);
+}
 .hamburger {
   display: none;
   flex-direction: column;
@@ -992,8 +1168,9 @@ img { max-width: 100%; display: block; }
 
 .car-svg {
   position: absolute;
-  bottom: 26px;
+  bottom: 24px;
   width: 220px;
+  height: 80px;
   animation: car-drive 8s linear infinite;
 }
 
@@ -1877,6 +2054,7 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
+  .theme-btn { display: flex; }
   .nav-links.open {
     display: flex;
     flex-direction: column;
