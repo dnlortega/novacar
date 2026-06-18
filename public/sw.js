@@ -1,4 +1,4 @@
-const CACHE = 'novacar-v2';
+const CACHE = 'novacar-v3';
 const STATIC = ['/', '/style.css', '/script.js', '/dynamic.js', '/favicon.svg', '/manifest.json'];
 
 self.addEventListener('install', e => {

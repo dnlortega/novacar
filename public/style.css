@@ -2304,40 +2304,100 @@ body:hover #custom-cursor { opacity: 1; }
 #exit-popup {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.75);
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 9998;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  backdrop-filter: blur(4px);
+  padding: 1.25rem;
   animation: fade-in-overlay 0.3s ease;
 }
 @keyframes fade-in-overlay { from { opacity: 0; } to { opacity: 1; } }
 #exit-popup[hidden] { display: none !important; }
 .exit-popup-box {
-  background: var(--dark-3);
-  border: 1px solid rgba(212,160,23,0.4);
-  border-radius: 16px;
-  padding: 2.5rem 2rem;
-  max-width: 440px;
+  background: linear-gradient(150deg, #1a1f2c 0%, #111520 100%);
+  border: 1px solid rgba(212,160,23,0.28);
+  border-radius: 20px;
+  padding: 2rem 2rem 1.75rem;
+  max-width: 380px;
   width: 100%;
   text-align: center;
   position: relative;
-  animation: popup-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(212,160,23,0.06) inset;
+  animation: popup-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-@keyframes popup-in { from { opacity: 0; transform: scale(0.85) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-.exit-popup-icon { font-size: 3rem; margin-bottom: 1rem; }
-.exit-popup-box h3 { font-size: 1.4rem; color: var(--white); margin-bottom: 0.5rem; }
-.exit-popup-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+@keyframes popup-in { from { opacity: 0; transform: scale(0.86) translateY(28px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 .exit-popup-close {
   position: absolute;
-  top: 0.75rem; right: 1rem;
-  background: none; border: none;
-  color: var(--text-muted); font-size: 1.4rem;
-  cursor: pointer; line-height: 1;
+  top: 1rem; right: 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  padding: 0;
 }
-.exit-popup-close:hover { color: var(--white); }
+.exit-popup-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.exit-popup-icon {
+  width: 68px; height: 68px;
+  background: radial-gradient(circle at 40% 30%, rgba(212,160,23,0.22), rgba(212,160,23,0.04));
+  border: 1.5px solid rgba(212,160,23,0.32);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.1rem;
+  color: var(--gold);
+  box-shadow: 0 0 28px rgba(212,160,23,0.12);
+}
+.exit-popup-badge {
+  display: inline-block;
+  background: rgba(212,160,23,0.1);
+  border: 1px solid rgba(212,160,23,0.28);
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.28rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 0.9rem;
+  text-transform: uppercase;
+}
+.exit-popup-box h3 { font-size: 1.45rem; font-weight: 800; color: #fff; margin-bottom: 0.65rem; line-height: 1.25; }
+.exit-popup-box p { color: #8a93a6; font-size: 0.87rem; margin-bottom: 1.1rem; line-height: 1.65; }
+.exit-popup-box p strong { color: var(--gold); font-weight: 600; }
+.exit-popup-trust {
+  display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  margin-bottom: 1.35rem; font-size: 0.78rem; color: #6b7280;
+}
+.exit-stars { color: #f4b400; font-size: 0.82rem; letter-spacing: 1px; }
+.exit-popup-cta {
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  width: 100%;
+  background: var(--gold);
+  color: var(--dark-1);
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  margin-bottom: 0.9rem;
+  transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.exit-popup-cta:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(212,160,23,0.38); }
+.exit-popup-dismiss {
+  background: none; border: none;
+  color: #5a6478; font-size: 0.8rem;
+  cursor: pointer; transition: color 0.2s;
+  padding: 0.3rem 0.5rem;
+  display: block; margin: 0 auto;
+  position: static;
+  width: auto; height: auto; border-radius: 0;
+}
+.exit-popup-dismiss:hover { color: #8a93a6; }
 
 /* 3D Tilt no hover dos cards de serviço */
 .card {
@@ -2579,6 +2639,166 @@ html { scroll-behavior: smooth; }
   .card:hover .card-icon { transform: none; }
   .card:hover::before { opacity: 0; }
 }
+
+/* ══════════════════════════════════════════
+   ANIMAÇÕES TEMÁTICAS — MECÂNICA AUTOMOTIVA
+   ══════════════════════════════════════════ */
+
+/* Hero title highlight — shimmer dourado */
+@keyframes gold-shimmer {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}
+.highlight {
+  background: linear-gradient(90deg, var(--gold) 20%, #ffe87a 50%, var(--gold) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 3.5s linear infinite;
+}
+
+/* Partículas douradas no hero (geradas pelo JS) */
+@keyframes spark-float {
+  0%   { opacity: 0; transform: translateY(0) scale(1); }
+  20%  { opacity: 0.85; }
+  80%  { opacity: 0.35; }
+  100% { opacity: 0; transform: translateY(-80px) scale(0.25) rotate(120deg); }
+}
+.hero-spark {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gold);
+  pointer-events: none;
+  z-index: 1;
+  animation: spark-float linear infinite;
+  box-shadow: 0 0 5px var(--gold), 0 0 10px rgba(212,160,23,0.4);
+}
+
+/* Fumaça / escapamento do carro (gerada pelo JS) */
+@keyframes exhaust-rise {
+  0%   { opacity: 0.5; transform: translateX(0) translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateX(-30px) translateY(-28px) scale(2.2); }
+}
+.car-exhaust {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(180,180,180,0.18);
+  pointer-events: none;
+  animation: exhaust-rise ease-out infinite;
+}
+
+/* ── Ícones dos cards de serviço ── */
+
+/* Carta 1 (Revisão/Gear) — giro lento contínuo, acelera no hover */
+.card:nth-child(1) .card-icon svg {
+  animation: slow-spin 14s linear infinite;
+  transform: none !important;
+}
+.card:nth-child(1):hover .card-icon svg { animation-duration: 1.2s; }
+@keyframes slow-spin { to { transform: rotate(360deg); } }
+
+/* Carta 2 (Freios) — tremida/pressionamento */
+.card:nth-child(2):hover .card-icon svg {
+  animation: brake-shake 0.45s ease;
+  transform: none !important;
+}
+@keyframes brake-shake {
+  0%,100% { transform: translateX(0); }
+  15% { transform: translateX(-5px) rotate(-10deg); }
+  35% { transform: translateX(5px) rotate(10deg); }
+  55% { transform: translateX(-4px) rotate(-6deg); }
+  75% { transform: translateX(4px) rotate(6deg); }
+}
+
+/* Carta 3 (Suspensão) — bounce elástico */
+.card:nth-child(3):hover .card-icon svg {
+  animation: susp-bounce 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  transform: none !important;
+}
+@keyframes susp-bounce {
+  0%   { transform: scaleY(1); }
+  35%  { transform: scaleY(0.65) scaleX(1.2); }
+  65%  { transform: scaleY(1.2) scaleX(0.9); }
+  100% { transform: scaleY(1) scaleX(1); }
+}
+
+/* Carta 4 (Motor) — vibração de motor */
+.card:nth-child(4):hover .card-icon svg {
+  animation: engine-vibe 0.07s linear 10;
+  transform: none !important;
+}
+@keyframes engine-vibe {
+  0%,100% { transform: translate(0,0) rotate(0); }
+  50%      { transform: translate(2px,-2px) rotate(2deg); }
+}
+
+/* Carta 5 (Elétrica) — flash elétrico */
+.card:nth-child(5):hover .card-icon svg {
+  animation: elec-flash 0.4s ease;
+  transform: none !important;
+}
+@keyframes elec-flash {
+  0%,100% { filter: none; transform: scale(1); }
+  20% { filter: drop-shadow(0 0 6px #a78bfa) brightness(2); transform: scale(1.25); }
+  40% { filter: none; transform: scale(0.85); }
+  70% { filter: drop-shadow(0 0 12px #818cf8) brightness(2.5); transform: scale(1.15); }
+}
+
+/* Carta 6 (Ar-condicionado) — rotação gelada */
+.card:nth-child(6) .card-icon svg {
+  animation: slow-spin 10s linear infinite reverse;
+  transform: none !important;
+}
+.card:nth-child(6):hover .card-icon svg { animation-duration: 1.5s; }
+
+/* ── Fumaça de escapamento animada ── */
+@keyframes exhaust-puff {
+  0%   { opacity: 0.45; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(-28px,-22px) scale(2); }
+}
+
+/* ── Indicador de farol pulsante ── */
+@keyframes headlight-pulse {
+  0%,100% { opacity: 0.7; }
+  50%      { opacity: 1; filter: drop-shadow(0 0 12px rgba(255,255,200,0.9)); }
+}
+.car-svg .car-headlight { animation: headlight-pulse 1.2s ease-in-out infinite; }
+
+/* ── CTA principal: seta animada ── */
+@keyframes arrow-right {
+  0%,100% { transform: translateX(0); }
+  50%      { transform: translateX(5px); }
+}
+.btn-primary .btn-arrow { display: inline-block; animation: arrow-right 1s ease-in-out infinite; }
+
+/* ── Seção "Sobre": reveal de texto com linha ── */
+@keyframes line-draw {
+  from { width: 0; }
+  to   { width: 48px; }
+}
+.about-title-bar {
+  display: block; height: 3px; width: 0;
+  background: var(--gold); border-radius: 2px;
+  margin: 0.75rem 0 1.25rem;
+  animation: line-draw 0.8s ease forwards;
+}
+
+/* ── Número de stats: destaque ao completar ── */
+@keyframes stat-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18) ; }
+  100% { transform: scale(1); }
+}
+.counter.done { animation: stat-pop 0.4s ease; }
+
+/* ── Piston bounce nos pistons decorativos ── */
+@keyframes piston-alt {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.piston:nth-child(odd)  { animation-delay: 0s; }
+.piston:nth-child(even) { animation-delay: 0.25s; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

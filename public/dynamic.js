@@ -358,7 +358,13 @@ const CARS = {
     // ── Carro animado ──
     if (c.car_type && CARS[c.car_type]) {
       const svg = document.querySelector('.car-svg');
-      if (svg) svg.innerHTML = CARS[c.car_type];
+      if (svg) {
+        svg.innerHTML = CARS[c.car_type];
+        // Reinicia a animação car-drive explicitamente (troca de innerHTML pode pausá-la em alguns browsers)
+        svg.style.animation = 'none';
+        void svg.offsetWidth;
+        svg.style.animation = 'car-drive 8s linear infinite';
+      }
     }
   }
 })();

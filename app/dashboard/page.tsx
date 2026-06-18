@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MessageSquare, Wrench, Star, HelpCircle, DollarSign, MousePointerClick, ClipboardList } from "lucide-react";
+import { Calendar, MessageSquare, Wrench, Star, HelpCircle, DollarSign, MousePointerClick, ClipboardList, ChevronRight } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface Stats {
@@ -20,14 +21,14 @@ export default function DashboardPage() {
   }, []);
 
   const cards = stats ? [
-    { label: "Agendamentos",       value: stats.bookings,          icon: Calendar,          badge: stats.new_bookings > 0 ? `${stats.new_bookings} novos` : null },
-    { label: "Serviços",           value: stats.services,          icon: Wrench,            badge: null },
-    { label: "Depoimentos",        value: stats.testimonials,      icon: Star,              badge: null },
-    { label: "FAQ",                value: stats.faq,               icon: HelpCircle,        badge: null },
-    { label: "Planos de Preço",    value: stats.pricing,           icon: DollarSign,        badge: null },
-    { label: "Cliques WhatsApp",   value: stats.wa_clicks,         icon: MessageSquare,     badge: null },
-    { label: "Formulários",        value: stats.form_submissions,  icon: ClipboardList,     badge: null },
-    { label: "Interações Totais",  value: stats.wa_clicks + stats.form_submissions, icon: MousePointerClick, badge: null },
+    { label: "Agendamentos",      value: stats.bookings,         icon: Calendar,         badge: stats.new_bookings > 0 ? `${stats.new_bookings} novos` : null, href: "/dashboard/bookings" },
+    { label: "Serviços",          value: stats.services,         icon: Wrench,           badge: null, href: "/dashboard/services" },
+    { label: "Depoimentos",       value: stats.testimonials,     icon: Star,             badge: null, href: "/dashboard/testimonials" },
+    { label: "FAQ",               value: stats.faq,              icon: HelpCircle,       badge: null, href: "/dashboard/faq" },
+    { label: "Planos de Preço",   value: stats.pricing,          icon: DollarSign,       badge: null, href: "/dashboard/pricing" },
+    { label: "Cliques WhatsApp",  value: stats.wa_clicks,        icon: MessageSquare,    badge: null, href: "/dashboard/bookings" },
+    { label: "Formulários",       value: stats.form_submissions, icon: ClipboardList,    badge: null, href: "/dashboard/bookings" },
+    { label: "Interações Totais", value: stats.wa_clicks + stats.form_submissions, icon: MousePointerClick, badge: null, href: "/dashboard/bookings" },
   ] : [];
 
   return (
@@ -42,17 +43,23 @@ export default function DashboardPage() {
           ? Array.from({ length: 8 }).map((_, i) => (
               <Card key={i}><CardContent className="p-6"><Skeleton className="h-16 w-full" /></CardContent></Card>
             ))
-          : cards.map(({ label, value, icon: Icon, badge }) => (
-              <Card key={label} className="border-border/50 hover:border-primary/30 transition-colors">
-                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
-                  <Icon className="w-4 h-4 text-primary" />
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="text-3xl font-bold">{value}</div>
-                  {badge && <Badge variant="destructive" className="mt-1 text-xs">{badge}</Badge>}
-                </CardContent>
-              </Card>
+          : cards.map(({ label, value, icon: Icon, badge, href }) => (
+              <Link key={label} href={href}>
+                <Card className="border-border/50 hover:border-primary/30 hover:bg-muted/30 transition-all cursor-pointer group h-full">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+                    <Icon className="w-4 h-4 text-primary" />
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="text-3xl font-bold">{value}</div>
+                    {badge && <Badge variant="destructive" className="mt-1 text-xs">{badge}</Badge>}
+                    <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span>Ver detalhes</span>
+                      <ChevronRight className="w-3 h-3" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))
         }
       </div>
