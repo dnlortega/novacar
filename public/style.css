@@ -1181,7 +1181,11 @@ img { max-width: 100%; display: block; }
   animation: car-drive 8s linear infinite;
 }
 
-@media (max-width: 480px) { .car-strip { display: none; } }
+@media (max-width: 480px) {
+  .car-strip { height: 96px; }
+  .car-svg   { width: 150px; height: 54px; bottom: 16px; }
+  .road      { height: 32px; }
+}
 
 /* ===== FORMULÁRIO DE AGENDAMENTO ===== */
 .contact-right {
