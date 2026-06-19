@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import {
   Building2, Zap, BarChart3, Info, Megaphone,
-  Car, MapPin, Search, Save,
+  Car, MapPin, Search, Save, Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,16 @@ const CAR_TYPES = [
   { id: "hatchback", label: "Hatchback",  desc: "Compacto e versátil" },
   { id: "pickup",    label: "Pickup",     desc: "Cabine + caçamba" },
   { id: "sports",    label: "Esportivo",  desc: "Baixo e veloz" },
+];
+
+const DAYS = [
+  { key: "seg", label: "Segunda-feira" },
+  { key: "ter", label: "Terça-feira" },
+  { key: "qua", label: "Quarta-feira" },
+  { key: "qui", label: "Quinta-feira" },
+  { key: "sex", label: "Sexta-feira" },
+  { key: "sab", label: "Sábado" },
+  { key: "dom", label: "Domingo" },
 ];
 
 interface FieldDef { key: string; label: string; rows?: number; }
@@ -37,40 +48,39 @@ const SECTIONS: SectionDef[] = [
     id: "empresa", title: "Empresa", icon: Building2,
     description: "Dados gerais da oficina exibidos no site",
     fields: [
-      { key: "name",           label: "Nome da empresa" },
-      { key: "phone",          label: "Telefone exibido (ex: (14) 9 9823-1408)" },
-      { key: "whatsapp",       label: "WhatsApp com DDI (ex: 5514998231408)" },
-      { key: "address",        label: "Endereço completo" },
-      { key: "hours_weekdays", label: "Horário de funcionamento (Seg–Sex)" },
-      { key: "instagram",      label: "Instagram (ex: @novacarstudio)" },
-      { key: "maps_url",       label: "Link Google Maps (botão 'Ver no Maps')" },
-      { key: "maps_embed",     label: "URL embed do Maps (src do iframe)", rows: 2 },
+      { key: "name",      label: "Nome da empresa" },
+      { key: "phone",     label: "Telefone exibido (ex: (14) 9 9823-1408)" },
+      { key: "whatsapp",  label: "WhatsApp com DDI (ex: 5514998231408)" },
+      { key: "address",   label: "Endereço completo" },
+      { key: "instagram", label: "Instagram (ex: @novacarstudio)" },
+      { key: "maps_url",  label: "Link Google Maps (botão 'Ver no Maps')" },
+      { key: "maps_embed",label: "URL embed do Maps (src do iframe)", rows: 2 },
     ],
   },
   {
     id: "hero", title: "Hero", icon: Zap,
     description: "Primeira seção que o visitante vê ao abrir o site",
     fields: [
-      { key: "hero_badge",           label: "Badge — texto acima do título (ex: Mecânica em Bauru/SP)" },
-      { key: "hero_title_before",    label: "Título — texto antes do destaque (ex: Seu carro merece a)" },
-      { key: "hero_title_highlight", label: "Título — palavra em dourado (ex: melhor mecânica)" },
+      { key: "hero_badge",           label: "Badge — texto acima do título" },
+      { key: "hero_title_before",    label: "Título — texto antes do destaque" },
+      { key: "hero_title_highlight", label: "Título — palavra em dourado" },
       { key: "hero_subtitle",        label: "Subtítulo / descrição", rows: 3 },
-      { key: "hero_cta_text",        label: "Botão principal — texto (ex: Agendar Agora)" },
+      { key: "hero_cta_text",        label: "Botão principal — texto" },
     ],
   },
   {
     id: "stats", title: "Contadores", icon: BarChart3,
-    description: "Números animados no hero (contagem automática ao rolar a página)",
+    description: "Números animados no hero",
     fields: [
       { key: "stat_cars",        label: "Carros atendidos — número (ex: 500)" },
-      { key: "stat_cars_label",  label: "Carros atendidos — label (ex: Carros atendidos)" },
+      { key: "stat_cars_label",  label: "Carros atendidos — label" },
       { key: "stat_years",       label: "Anos de experiência — número (ex: 5)" },
-      { key: "stat_years_label", label: "Anos de experiência — label (ex: De experiência)" },
+      { key: "stat_years_label", label: "Anos de experiência — label" },
     ],
   },
   {
     id: "sobre", title: "Sobre", icon: Info,
-    description: "Seção 'Quem somos' — textos sobre a oficina",
+    description: "Seção 'Quem somos'",
     fields: [
       { key: "about_title", label: "Título da seção Sobre" },
       { key: "about_text1", label: "Parágrafo 1", rows: 3 },
@@ -79,30 +89,89 @@ const SECTIONS: SectionDef[] = [
   },
   {
     id: "cta", title: "Banner CTA", icon: Megaphone,
-    description: "Faixa de chamada para ação exibida antes do FAQ",
+    description: "Faixa de chamada para ação",
     fields: [
-      { key: "cta_title",    label: "Título (ex: Pronto para cuidar do seu carro?)" },
-      { key: "cta_subtitle", label: "Subtítulo (ex: Agende uma avaliação gratuita...)" },
-      { key: "cta_btn_text", label: "Texto do botão (ex: Falar no WhatsApp)" },
+      { key: "cta_title",    label: "Título" },
+      { key: "cta_subtitle", label: "Subtítulo" },
+      { key: "cta_btn_text", label: "Texto do botão" },
     ],
   },
   {
     id: "contato", title: "Contato Extra", icon: MapPin,
-    description: "Links e redes sociais exibidos na seção de contato",
+    description: "Links e redes sociais na seção de contato",
     fields: [
       { key: "tagline", label: "Slogan/tagline da empresa" },
-      { key: "about",   label: "Texto 'sobre' resumido (usado internamente)", rows: 2 },
+      { key: "about",   label: "Texto 'sobre' resumido", rows: 2 },
     ],
   },
   {
     id: "seo", title: "SEO", icon: Search,
-    description: "Metatags para Google, WhatsApp e redes sociais",
+    description: "Metatags para Google e redes sociais",
     fields: [
       { key: "seo_title",       label: "Título da página (<title>)" },
       { key: "seo_description", label: "Meta description (aparece no Google)", rows: 2 },
     ],
   },
 ];
+
+function HoursEditor({ data, set }: { data: ConfigData; set: (k: string, v: string) => void }) {
+  return (
+    <div className="space-y-2">
+      {DAYS.map(({ key, label }) => {
+        const enabled = data[`hours_${key}_enabled`] === "1";
+        const open    = data[`hours_${key}_open`]    || "08:00";
+        const close   = data[`hours_${key}_close`]   || "18:00";
+        return (
+          <div
+            key={key}
+            className={cn(
+              "flex items-center gap-3 p-3 rounded-lg border transition-colors",
+              enabled
+                ? "border-primary/30 bg-primary/5"
+                : "border-border bg-muted/20"
+            )}
+          >
+            {/* Toggle */}
+            <Switch
+              checked={enabled}
+              onCheckedChange={(v) => set(`hours_${key}_enabled`, v ? "1" : "0")}
+            />
+            {/* Dia */}
+            <span className={cn("w-28 text-sm font-medium shrink-0", !enabled && "text-muted-foreground")}>
+              {label}
+            </span>
+            {/* Horários */}
+            {enabled ? (
+              <div className="flex items-center gap-2 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <Label className="text-xs text-muted-foreground w-10">Abre</Label>
+                  <Input
+                    type="time"
+                    value={open}
+                    onChange={(e) => set(`hours_${key}_open`, e.target.value)}
+                    className="h-8 w-28 text-sm"
+                  />
+                </div>
+                <span className="text-muted-foreground text-xs">→</span>
+                <div className="flex items-center gap-1.5">
+                  <Label className="text-xs text-muted-foreground w-10">Fecha</Label>
+                  <Input
+                    type="time"
+                    value={close}
+                    onChange={(e) => set(`hours_${key}_close`, e.target.value)}
+                    className="h-8 w-28 text-sm"
+                  />
+                </div>
+              </div>
+            ) : (
+              <span className="text-xs text-muted-foreground italic">Fechado</span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function ConfigPage() {
   const [data, setData]     = useState<ConfigData>({});
@@ -150,7 +219,7 @@ export default function ConfigPage() {
 
       {!loaded ? (
         <div className="space-y-4">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 7 }).map((_, i) => (
             <Skeleton key={i} className="h-40 w-full rounded-xl" />
           ))}
         </div>
@@ -198,6 +267,26 @@ export default function ConfigPage() {
             </Card>
           ))}
 
+          {/* Horário de Funcionamento */}
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <Clock className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-base leading-tight">Horário de Funcionamento</CardTitle>
+                  <CardDescription className="text-xs mt-0.5">
+                    Ative os dias e defina abertura e fechamento
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <HoursEditor data={data} set={set} />
+            </CardContent>
+          </Card>
+
           {/* Carro animado */}
           <Card className="border-border/50">
             <CardHeader className="pb-3">
@@ -208,7 +297,7 @@ export default function ConfigPage() {
                 <div>
                   <CardTitle className="text-base leading-tight">Carro Animado</CardTitle>
                   <CardDescription className="text-xs mt-0.5">
-                    Tipo de veículo exibido na faixa animada do site
+                    Tipo de veículo exibido na faixa animada
                   </CardDescription>
                 </div>
               </div>

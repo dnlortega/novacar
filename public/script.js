@@ -39,10 +39,15 @@
 })();
 
 // ---- Preloader ----
-window.addEventListener('load', () => {
+(function hidePreloader() {
   const pl = document.getElementById('preloader');
-  if (pl) setTimeout(() => pl.classList.add('hidden'), 400);
-});
+  if (!pl) return;
+  if (document.readyState === 'complete') {
+    setTimeout(() => pl.classList.add('hidden'), 400);
+  } else {
+    window.addEventListener('load', () => setTimeout(() => pl.classList.add('hidden'), 400), { once: true });
+  }
+})();
 
 // ---- Footer year ----
 document.getElementById('footer-year').textContent = new Date().getFullYear();

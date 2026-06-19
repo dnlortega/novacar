@@ -675,8 +675,8 @@ img { max-width: 100%; display: block; }
 .about-gear-spin {
   width: 260px;
   height: 260px;
-  fill: rgba(212,160,23,0.08);
-  animation: spin-cw 20s linear infinite;
+  fill: rgba(212,160,23,0.15);
+  animation: spin-cw 10s linear infinite;
   position: absolute;
 }
 
@@ -985,23 +985,42 @@ img { max-width: 100%; display: block; }
 
 .brands-track {
   display: flex;
-  gap: 2.5rem;
+  gap: 2rem;
+  align-items: center;
   width: max-content;
-  animation: brands-scroll 22s linear infinite;
+  animation: brands-scroll 38s linear infinite;
 }
 .brands-track:hover { animation-play-state: paused; }
 
-.brands-track span {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.2);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: color 0.3s;
+.brand-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0.28;
+  filter: grayscale(1);
+  transition: opacity 0.3s, filter 0.3s;
   cursor: default;
+  margin: 0;
+  padding: 0;
 }
-.brands-track span:hover { color: var(--gold); }
+.brand-item:hover { opacity: 0.8; filter: grayscale(0); }
+
+.brand-svg {
+  width: 40px;
+  height: 40px;
+  color: rgba(255,255,255,0.85);
+  flex-shrink: 0;
+}
+
+.brand-item figcaption {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
 
 /* ===== PREÇOS ===== */
 .pricing { background: var(--dark-2); }

@@ -277,9 +277,20 @@ const CARS = {
       if (a.textContent.match(/\(\d{2}\)/)) a.textContent = c.phone || a.textContent;
     });
 
-    // Horário
+    // Horário — lê chaves por dia
     const hoursEl = document.querySelector('[itemprop="openingHours"]');
-    if (hoursEl && c.hours_weekdays) hoursEl.textContent = c.hours_weekdays;
+    if (hoursEl) {
+      const DAYS_PT = { seg:'Seg', ter:'Ter', qua:'Qua', qui:'Qui', sex:'Sex', sab:'Sáb', dom:'Dom' };
+      const parts = [];
+      for (const [key, label] of Object.entries(DAYS_PT)) {
+        if (c[`hours_${key}_enabled`] === '1') {
+          const o = c[`hours_${key}_open`] || '08:00';
+          const cl = c[`hours_${key}_close`] || '18:00';
+          parts.push(`${label}: ${o}–${cl}`);
+        }
+      }
+      if (parts.length) hoursEl.textContent = parts.join(' | ');
+    }
 
     // ── Hero ──
     const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
